@@ -1,9 +1,14 @@
 const db = require("../dbConfig.js");
 
 module.exports = {
-  get: id => {
+  getById: id => {
     return db("users")
       .where("id", id)
+      .first();
+  },
+  getByUsername: username => {
+    return db("users")
+      .where("username", username)
       .first();
   },
   insert: account => {
