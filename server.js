@@ -9,12 +9,12 @@ const userRoutes = require("./users/userRoutes.js");
 server.use(express.json());
 server.use(helmet());
 
-server.get("/", (req, res) => {
-  res.status(200).send("Still alive");
-});
-
 server.use("/api/register", registerRoutes);
 server.use("/api/login", loginRoutes);
 server.use("/api/users", userRoutes);
+
+server.get("/", (req, res) => {
+  res.status(200).send("Still alive");
+});
 
 module.exports = server;
