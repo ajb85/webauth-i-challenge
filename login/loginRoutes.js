@@ -7,10 +7,11 @@ routes.post("/", async (req, res) => {
   try {
     if (username && password) {
       const account = await db.getByUsername(username);
-      if (bcrypt.compareSync(password, account.password)) {
-        res.status(200).send("+1");
+      if (account && bcrypt.compareSync(password, account.password)) {
+        req.session.user = account;
+        res.status(200).send(`Logged in as ${account.username}`);
       } else {
-        res.status(400).json({ message: "Incorrect username or password" });
+        res.status(400).json({ message: "You shall not pass!" });
       }
     } else {
       res.status(400).json({ message: "Provide a username and password" });
