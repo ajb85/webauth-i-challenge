@@ -1,8 +1,8 @@
 const routes = require("express").Router();
 const db = require("./users-model.js");
 
-async function auth() {
-  return (req, res, next) => {
+function auth() {
+  return async (req, res, next) => {
     const session = await db.findBySid(req.session.id);
     session
       ? next()
@@ -10,6 +10,14 @@ async function auth() {
   };
 }
 
-routes.get("/", auth(), async (req, res) => {});
+routes.get("/", auth(), async (req, res) => {
+  try {
+    const users = await db.findAll();
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error retriving users" });
+  }
+});
 
 module.exports = routes;
