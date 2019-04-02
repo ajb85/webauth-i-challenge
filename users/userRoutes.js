@@ -1,10 +1,12 @@
 const routes = require("express").Router();
+const db = require("./users-model.js");
 
-function auth() {
+async function auth() {
   return (req, res, next) => {
-    // if cookie is valid
-    //next();
-    // else return 403 forbidden
+    const session = await db.findBySid(req.session.id);
+    session
+      ? next()
+      : res.status(403).json({ message: "Forbidden.  You are not authorized" });
   };
 }
 
